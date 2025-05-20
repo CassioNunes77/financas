@@ -2,414 +2,688 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termo Bird</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bichinho Virtual 90's</title>
     <style>
         body {
+            font-family: 'Courier New', monospace;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
-            background-color: #87CEEB;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
         
-        #game-container {
+        #pet-container {
+            width: 300px;
+            height: 350px;
+            background-color: #fff;
+            border: 10px solid #ff69b4;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             position: relative;
-            width: 400px;
-            height: 600px;
-            background-color: #87CEEB;
             overflow: hidden;
-            border: 3px solid #000;
+            display: flex;
+            flex-direction: column;
         }
         
-        #bird {
-            position: absolute;
-            width: 40px;
+        #screen {
+            flex-grow: 1;
+            background-color: #c0e0c0;
+            margin: 15px;
+            border: 5px solid #888;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #pet-display {
+            width: 120px;
+            height: 120px;
+            margin: 10px;
+            position: relative;
+            image-rendering: pixelated;
+        }
+        
+        #pet-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        #status-bars {
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .status-bar {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-label {
+            width: 60px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .bar-container {
+            flex-grow: 1;
+            height: 12px;
+            border: 2px solid #000;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 100%;
+            transition: width 0.3s;
+        }
+        
+        #hunger-bar .bar-fill {
+            background-color: #FF5722;
+        }
+        
+        #happiness-bar .bar-fill {
+            background-color: #FFC107;
+        }
+        
+        #energy-bar .bar-fill {
+            background-color: #2196F3;
+        }
+        
+        #message-box {
+            width: 90%;
             height: 40px;
-            background-color: #FFD700;
+            margin: 10px 0;
+            padding: 5px;
+            background-color: #fff;
+            border: 2px solid #000;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        #controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+        
+        .control-btn {
+            padding: 8px;
+            border: none;
             border-radius: 50%;
-            left: 100px;
+            background-color: #ff69b4;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #d1488e;
+            transition: all 0.1s;
+            touch-action: manipulation;
+        }
+        
+        .control-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #d1488e;
+        }
+        
+        #name-display {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        #age-display {
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 5px 8px;
+            font-size: 10px;
+            max-width: 80%;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
             z-index: 10;
         }
         
-        .pipe {
+        .poop {
             position: absolute;
-            width: 60px;
-            background-color: #2E8B57;
-            right: 0;
-        }
-        
-        .letter {
-            position: absolute;
-            font-size: 24px;
-            font-weight: bold;
-            color: #000;
+            width: 20px;
+            height: 20px;
+            background-color: #8B4513;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
             z-index: 5;
-        }
-        
-        #word-display {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            letter-spacing: 5px;
-            color: #FFF;
-            text-shadow: 2px 2px 4px #000;
-            z-index: 20;
-        }
-        
-        #score {
-            position: absolute;
-            top: 60px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 20px;
-            color: #FFF;
-            text-shadow: 2px 2px 4px #000;
-            z-index: 20;
         }
         
         #game-over {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             color: white;
-            z-index: 30;
+            font-size: 20px;
+            display: none;
+            z-index: 20;
         }
         
-        #share-link {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #FFF;
-            color: #000;
-            border-radius: 5px;
-            cursor: pointer;
-            user-select: all;
-        }
-        
-        button {
+        #restart-btn {
             margin-top: 20px;
             padding: 10px 20px;
-            background-color: #FFD700;
+            background-color: #ff69b4;
             border: none;
             border-radius: 5px;
+            color: white;
             font-weight: bold;
             cursor: pointer;
         }
         
-        .ground {
+        #sound-btn {
             position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 20px;
-            background-color: #8B4513;
-            z-index: 15;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 30;
         }
     </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="word-display">_____</div>
-        <div id="score">Pontos: 0</div>
-        <div id="bird"></div>
-        <div class="ground"></div>
-        
+    <div id="pet-container">
+        <button id="sound-btn">🔊</button>
+        <div id="screen">
+            <div id="name-display">Tamagotchi</div>
+            <div id="age-display">Idade: 0 dias</div>
+            <div id="pet-display">
+                <img id="pet-image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZmYzBjMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjUiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2NSBRIDUwIDc1IDYwIDY1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==" alt="Bichinho Virtual">
+            </div>
+            <div id="status-bars">
+                <div class="status-bar">
+                    <div class="status-label">Fome:</div>
+                    <div class="bar-container">
+                        <div id="hunger-bar" class="bar-fill"></div>
+                    </div>
+                </div>
+                <div class="status-bar">
+                    <div class="status-label">Felicidade:</div>
+                    <div class="bar-container">
+                        <div id="happiness-bar" class="bar-fill"></div>
+                    </div>
+                </div>
+                <div class="status-bar">
+                    <div class="status-label">Energia:</div>
+                    <div class="bar-container">
+                        <div id="energy-bar" class="bar-fill"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="message-box">Olá! Sou seu novo bichinho!</div>
+        </div>
+        <div id="controls">
+            <button class="control-btn" id="feed-btn">Comer</button>
+            <button class="control-btn" id="play-btn">Brincar</button>
+            <button class="control-btn" id="light-btn">Luz</button>
+            <button class="control-btn" id="clean-btn">Limpar</button>
+            <button class="control-btn" id="medicine-btn">Remédio</button>
+            <button class="control-btn" id="discipline-btn">Disciplina</button>
+        </div>
         <div id="game-over">
-            <h1>Fim de Jogo!</h1>
-            <p id="result-message"></p>
-            <p>Sua pontuação: <span id="final-score">0</span></p>
-            <p>Palavra: <span id="final-word"></span></p>
-            <div id="share-link">Copie este link para compartilhar!</div>
-            <button id="restart-btn">Jogar Novamente</button>
+            <div>GAME OVER</div>
+            <button id="restart-btn">Recomeçar</button>
         </div>
     </div>
 
+    <audio id="sound-effect" src="data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU..."></audio>
+    <audio id="bg-music" loop src="data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" style="display:none"></audio>
+
     <script>
-        // Configurações do jogo
+        // Estado do bichinho
+        const pet = {
+            name: "Tamagotchi",
+            age: 0,
+            stage: "baby",
+            hunger: 50,
+            happiness: 50,
+            energy: 80,
+            health: 100,
+            discipline: 50,
+            weight: 30,
+            poopCount: 0,
+            isSleeping: false,
+            isSick: false,
+            isDead: false,
+            evolutionTimer: 0,
+            lastInteraction: Date.now(),
+            messages: [
+                "Olá!",
+                "Estou com fome!",
+                "Vamos brincar?",
+                "Zzzzz...",
+                "Não me sinto bem...",
+                "Adoro você!",
+                "Preciso ir ao banheiro!",
+                "Que chato!",
+                "Yay!",
+                "Obrigado!"
+            ]
+        };
+
+        // Elementos DOM
+        const elements = {
+            petImage: document.getElementById('pet-image'),
+            nameDisplay: document.getElementById('name-display'),
+            ageDisplay: document.getElementById('age-display'),
+            hungerBar: document.getElementById('hunger-bar'),
+            happinessBar: document.getElementById('happiness-bar'),
+            energyBar: document.getElementById('energy-bar'),
+            messageBox: document.getElementById('message-box'),
+            feedBtn: document.getElementById('feed-btn'),
+            playBtn: document.getElementById('play-btn'),
+            lightBtn: document.getElementById('light-btn'),
+            cleanBtn: document.getElementById('clean-btn'),
+            medicineBtn: document.getElementById('medicine-btn'),
+            disciplineBtn: document.getElementById('discipline-btn'),
+            gameOverScreen: document.getElementById('game-over'),
+            restartBtn: document.getElementById('restart-btn'),
+            soundBtn: document.getElementById('sound-btn'),
+            soundEffect: document.getElementById('sound-effect'),
+            bgMusic: document.getElementById('bg-music'),
+            screen: document.getElementById('screen')
+        };
+
+        // Configurações
         const config = {
-            gravity: 0.5,
-            jumpForce: -10,
-            pipeSpeed: 3,
-            pipeGap: 150,
-            pipeFrequency: 1500,
-            letterFrequency: 1000,
-            words: ['SWIFT', 'BIRDS', 'APPLE', 'GAMES', 'FLAPP', 'TERMO', 'COCOS', 'CLOUD']
-        };
-        
-        // Estado do jogo
-        const state = {
-            birdY: 300,
-            birdVelocity: 0,
-            gameOver: false,
-            score: 0,
-            pipes: [],
-            letters: [],
-            currentWord: '',
-            guessedLetters: [],
-            lastPipeTime: 0,
-            lastLetterTime: 0
-        };
-        
-        // Elementos do DOM
-        const bird = document.getElementById('bird');
-        const gameContainer = document.getElementById('game-container');
-        const wordDisplay = document.getElementById('word-display');
-        const scoreDisplay = document.getElementById('score');
-        const gameOverScreen = document.getElementById('game-over');
-        const resultMessage = document.getElementById('result-message');
-        const finalScore = document.getElementById('final-score');
-        const finalWord = document.getElementById('final-word');
-        const shareLink = document.getElementById('share-link');
-        const restartBtn = document.getElementById('restart-btn');
-        
-        // Inicializa o jogo
-        function initGame() {
-            state.birdY = 300;
-            state.birdVelocity = 0;
-            state.gameOver = false;
-            state.score = 0;
-            state.pipes = [];
-            state.letters = [];
-            state.guessedLetters = [];
-            
-            // Escolhe uma palavra aleatória
-            state.currentWord = config.words[Math.floor(Math.random() * config.words.length)];
-            updateWordDisplay();
-            
-            // Remove todos os canos e letras existentes
-            document.querySelectorAll('.pipe, .letter').forEach(el => el.remove());
-            
-            // Esconde a tela de game over
-            gameOverScreen.style.display = 'none';
-            
-            // Atualiza a exibição da pontuação
-            scoreDisplay.textContent = `Pontos: ${state.score}`;
-            
-            // Inicia o loop do jogo
-            requestAnimationFrame(gameLoop);
-        }
-        
-        // Atualiza a exibição da palavra
-        function updateWordDisplay() {
-            let display = '';
-            for (let i = 0; i < state.currentWord.length; i++) {
-                if (state.guessedLetters.includes(state.currentWord[i])) {
-                    display += state.currentWord[i];
-                } else {
-                    display += '_';
-                }
+            soundEnabled: true,
+            evolutionStages: {
+                baby: { duration: 2, next: 'child', image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZmYzBjMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjUiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2NSBRIDUwIDc1IDYwIDY1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==' },
+                child: { duration: 5, next: 'teen', image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZmYzBjMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjUiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2NSBRIDUwIDgwIDYwIDY1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0zNSA1NSBMIDI1IDQ1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NSA1NSBMIDc1IDQ1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==' },
+                teen: { duration: 8, next: 'adult', image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZmYzBjMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjUiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2NSBRIDUwIDgwIDYwIDY1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0zMCA1MCBMIDI1IDQwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik03MCA1MCBMIDc1IDQwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik00NSA0MCBMIDU1IDQwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==' },
+                adult: { duration: Infinity, image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI2ZmYzBjMCIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIzNSIgY3k9IjQwIiByPSI1IiBmaWxsPSIjMDAwIi8+PGNpcmNsZSBjeD0iNjUiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik00MCA2NSBRIDUwIDgwIDYwIDY1IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0zMCA1MCBMIDIwIDMwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik03MCA1MCBMIDgwIDMwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik00NSA0MCBMIDU1IDQwIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzAiIHI9IjUiIGZpbGw9IiMwMDAiLz48L3N2Zz4=' }
+            },
+            sounds: {
+                button: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...',
+                happy: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...',
+                sad: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...',
+                eat: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...',
+                sleep: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...',
+                gameOver: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...'
             }
-            wordDisplay.textContent = display;
+        };
+
+        // Inicialização
+        function init() {
+            updateDisplay();
+            setInterval(gameLoop, 3000);
+            setInterval(poopLoop, 10000);
+            setInterval(ageLoop, 60000);
+            
+            // Event listeners
+            elements.feedBtn.addEventListener('click', feedPet);
+            elements.playBtn.addEventListener('click', playWithPet);
+            elements.lightBtn.addEventListener('click', toggleLight);
+            elements.cleanBtn.addEventListener('click', cleanPoop);
+            elements.medicineBtn.addEventListener('click', giveMedicine);
+            elements.disciplineBtn.addEventListener('click', disciplinePet);
+            elements.restartBtn.addEventListener('click', restartGame);
+            elements.soundBtn.addEventListener('click', toggleSound);
+            
+            // Toque para interação adicional
+            elements.screen.addEventListener('click', () => {
+                if (!pet.isDead) {
+                    showRandomMessage();
+                    pet.happiness = Math.min(100, pet.happiness + 2);
+                    updateDisplay();
+                    playSound('happy');
+                }
+            });
+            
+            // Iniciar música de fundo
+            if (config.soundEnabled) {
+                elements.bgMusic.play().catch(e => console.log("Autoplay bloqueado:", e));
+            }
         }
-        
+
         // Loop principal do jogo
-        function gameLoop(timestamp) {
-            if (state.gameOver) return;
+        function gameLoop() {
+            if (pet.isDead) return;
             
-            // Atualiza a posição do pássaro
-            state.birdVelocity += config.gravity;
-            state.birdY += state.birdVelocity;
-            bird.style.top = `${state.birdY}px`;
+            // Diminuir status gradualmente
+            pet.hunger = Math.max(0, pet.hunger - (pet.isSleeping ? 1 : 3));
+            pet.happiness = Math.max(0, pet.happiness - (pet.isSleeping ? 0 : 2));
+            pet.energy = Math.max(0, pet.energy - (pet.isSleeping ? -5 : 2));
             
-            // Verifica colisões com o chão e o teto
-            if (state.birdY > gameContainer.offsetHeight - 60 || state.birdY < 0) {
-                endGame(false);
+            // Verificar se está doente
+            if (pet.hunger < 20 || pet.happiness < 20 || pet.poopCount > 2) {
+                if (Math.random() < 0.3) pet.isSick = true;
+            }
+            
+            // Verificar se morreu
+            if (pet.hunger <= 0 || pet.happiness <= 0 || (pet.isSick && Math.random() < 0.1)) {
+                pet.isDead = true;
+                showGameOver();
+                playSound('gameOver');
+            }
+            
+            // Evolução
+            if (config.evolutionStages[pet.stage].duration !== Infinity && 
+                pet.age >= config.evolutionStages[pet.stage].duration) {
+                evolvePet();
+            }
+            
+            updateDisplay();
+        }
+
+        // Loop de cocô
+        function poopLoop() {
+            if (pet.isDead || pet.isSleeping) return;
+            
+            if (Math.random() < 0.4 && pet.hunger > 50) {
+                pet.poopCount++;
+                createPoop();
+                showMessage("Preciso ir ao banheiro!");
+                playSound('sad');
+            }
+        }
+
+        // Loop de envelhecimento
+        function ageLoop() {
+            if (pet.isDead) return;
+            
+            pet.age++;
+            updateDisplay();
+            
+            // Mensagem aleatória
+            if (Math.random() < 0.3) {
+                showRandomMessage();
+            }
+        }
+
+        // Atualizar display
+        function updateDisplay() {
+            // Atualizar barras de status
+            elements.hungerBar.style.width = `${pet.hunger}%`;
+            elements.happinessBar.style.width = `${pet.happiness}%`;
+            elements.energyBar.style.width = `${pet.energy}%`;
+            
+            // Atualizar informações
+            elements.nameDisplay.textContent = pet.name;
+            elements.ageDisplay.textContent = `Idade: ${pet.age} dias`;
+            
+            // Atualizar imagem baseada no estágio e estado
+            let imgSrc = config.evolutionStages[pet.stage].image;
+            if (pet.isSleeping) {
+                imgSrc = imgSrc.replace('fill="#ffc0c0"', 'fill="#c0c0ff"');
+            }
+            if (pet.isSick) {
+                imgSrc = imgSrc.replace('fill="#ffc0c0"', 'fill="#c0ffc0"');
+            }
+            elements.petImage.src = imgSrc;
+            
+            // Atualizar botão de luz
+            elements.lightBtn.textContent = pet.isSleeping ? "Acordar" : "Dormir";
+        }
+
+        // Alimentar o bichinho
+        function feedPet() {
+            if (pet.isDead) return;
+            
+            if (pet.isSleeping) {
+                showMessage("Está dormindo!");
+                playSound('sad');
                 return;
             }
             
-            // Gera novos canos
-            if (timestamp - state.lastPipeTime > config.pipeFrequency) {
-                createPipe();
-                state.lastPipeTime = timestamp;
+            pet.hunger = Math.min(100, pet.hunger + 20);
+            pet.weight = Math.min(100, pet.weight + 5);
+            showMessage("Yummy!");
+            playSound('eat');
+            
+            // Chance de ficar doente se comer demais
+            if (pet.hunger > 80 && Math.random() < 0.3) {
+                pet.isSick = true;
+                showMessage("Não me sinto bem...");
+                playSound('sad');
             }
             
-            // Gera novas letras
-            if (timestamp - state.lastLetterTime > config.letterFrequency) {
-                createLetter();
-                state.lastLetterTime = timestamp;
-            }
+            updateDisplay();
+        }
+
+        // Brincar com o bichinho
+        function playWithPet() {
+            if (pet.isDead) return;
             
-            // Move os canos
-            movePipes();
-            
-            // Move as letras
-            moveLetters();
-            
-            // Verifica se a palavra foi completada
-            if (state.guessedLetters.length === new Set(state.currentWord.split('')).size) {
-                endGame(true);
+            if (pet.isSleeping) {
+                showMessage("Está dormindo!");
+                playSound('sad');
                 return;
             }
             
-            requestAnimationFrame(gameLoop);
-        }
-        
-        // Cria um novo cano
-        function createPipe() {
-            const gapPosition = Math.random() * (gameContainer.offsetHeight - config.pipeGap - 200) + 100;
-            
-            // Cano de cima
-            const topPipe = document.createElement('div');
-            topPipe.className = 'pipe';
-            topPipe.style.top = '0';
-            topPipe.style.height = `${gapPosition}px`;
-            topPipe.style.right = '0';
-            gameContainer.appendChild(topPipe);
-            
-            // Cano de baixo
-            const bottomPipe = document.createElement('div');
-            bottomPipe.className = 'pipe';
-            bottomPipe.style.bottom = '20px';
-            bottomPipe.style.height = `${gameContainer.offsetHeight - gapPosition - config.pipeGap - 20}px`;
-            bottomPipe.style.right = '0';
-            gameContainer.appendChild(bottomPipe);
-            
-            state.pipes.push({
-                top: topPipe,
-                bottom: bottomPipe,
-                x: gameContainer.offsetWidth,
-                passed: false
-            });
-        }
-        
-        // Cria uma nova letra
-        function createLetter() {
-            // Escolhe uma letra aleatória da palavra atual que ainda não foi coletada
-            const availableLetters = state.currentWord.split('').filter(l => !state.guessedLetters.includes(l));
-            if (availableLetters.length === 0) return;
-            
-            const letter = availableLetters[Math.floor(Math.random() * availableLetters.length)];
-            
-            const letterElement = document.createElement('div');
-            letterElement.className = 'letter';
-            letterElement.textContent = letter;
-            letterElement.style.top = `${Math.random() * (gameContainer.offsetHeight - 100) + 50}px`;
-            letterElement.style.right = '0';
-            gameContainer.appendChild(letterElement);
-            
-            state.letters.push({
-                element: letterElement,
-                x: gameContainer.offsetWidth,
-                letter: letter
-            });
-        }
-        
-        // Move os canos
-        function movePipes() {
-            for (let i = state.pipes.length - 1; i >= 0; i--) {
-                const pipe = state.pipes[i];
-                pipe.x -= config.pipeSpeed;
-                pipe.top.style.right = `${gameContainer.offsetWidth - pipe.x}px`;
-                pipe.bottom.style.right = `${gameContainer.offsetWidth - pipe.x}px`;
-                
-                // Verifica colisão com o pássaro
-                if (
-                    (100 < pipe.x + 60 && 100 + 40 > pipe.x) && 
-                    (state.birdY < pipe.top.offsetHeight || state.birdY + 40 > gameContainer.offsetHeight - pipe.bottom.offsetHeight - 20)
-                ) {
-                    endGame(false);
-                    return;
-                }
-                
-                // Marca pontos quando passa por um cano
-                if (!pipe.passed && pipe.x + 60 < 100) {
-                    pipe.passed = true;
-                    state.score += 5;
-                    scoreDisplay.textContent = `Pontos: ${state.score}`;
-                }
-                
-                // Remove canos que saíram da tela
-                if (pipe.x + 60 < 0) {
-                    pipe.top.remove();
-                    pipe.bottom.remove();
-                    state.pipes.splice(i, 1);
-                }
+            if (pet.energy < 20) {
+                showMessage("Estou cansado...");
+                playSound('sad');
+                return;
             }
-        }
-        
-        // Move as letras
-        function moveLetters() {
-            for (let i = state.letters.length - 1; i >= 0; i--) {
-                const letterObj = state.letters[i];
-                letterObj.x -= config.pipeSpeed;
-                letterObj.element.style.right = `${gameContainer.offsetWidth - letterObj.x}px`;
-                
-                // Verifica colisão com o pássaro
-                if (
-                    (100 < letterObj.x + 30 && 100 + 40 > letterObj.x) && 
-                    (state.birdY < letterObj.element.offsetTop + 24 && state.birdY + 40 > letterObj.element.offsetTop)
-                ) {
-                    // Adiciona a letra às letras coletadas (se for parte da palavra)
-                    if (state.currentWord.includes(letterObj.letter) && !state.guessedLetters.includes(letterObj.letter)) {
-                        state.guessedLetters.push(letterObj.letter);
-                        updateWordDisplay();
-                        state.score += 10;
-                        scoreDisplay.textContent = `Pontos: ${state.score}`;
-                    }
-                    
-                    letterObj.element.remove();
-                    state.letters.splice(i, 1);
-                }
-                
-                // Remove letras que saíram da tela
-                if (letterObj.x + 30 < 0) {
-                    letterObj.element.remove();
-                    state.letters.splice(i, 1);
-                }
-            }
-        }
-        
-        // Finaliza o jogo
-        function endGame(win) {
-            state.gameOver = true;
             
-            if (win) {
-                resultMessage.textContent = "Parabéns! Você completou a palavra!";
+            pet.happiness = Math.min(100, pet.happiness + 15);
+            pet.energy = Math.max(0, pet.energy - 10);
+            showMessage("Isso é divertido!");
+            playSound('happy');
+            
+            updateDisplay();
+        }
+
+        // Alternar luz (dormir/acordar)
+        function toggleLight() {
+            if (pet.isDead) return;
+            
+            pet.isSleeping = !pet.isSleeping;
+            
+            if (pet.isSleeping) {
+                showMessage("Zzzzz...");
+                playSound('sleep');
             } else {
-                resultMessage.textContent = "Game Over! Tente novamente!";
+                showMessage("Bom dia!");
+                playSound('happy');
             }
             
-            finalScore.textContent = state.score;
-            finalWord.textContent = state.currentWord;
-            
-            // Gera link de compartilhamento
-            const shareUrl = `https://termobird.com/share/${generateId()}?score=${state.score}&word=${state.currentWord}`;
-            shareLink.textContent = shareUrl;
-            
-            gameOverScreen.style.display = 'flex';
+            updateDisplay();
         }
-        
-        // Gera um ID aleatório para o link
-        function generateId() {
-            return Math.random().toString(36).substring(2, 10).toUpperCase();
-        }
-        
-        // Event listeners
-        gameContainer.addEventListener('click', () => {
-            if (!state.gameOver) {
-                state.birdVelocity = config.jumpForce;
+
+        // Limpar cocô
+        function cleanPoop() {
+            if (pet.isDead) return;
+            
+            if (pet.poopCount > 0) {
+                pet.poopCount = 0;
+                document.querySelectorAll('.poop').forEach(poop => poop.remove());
+                showMessage("Obrigado por limpar!");
+                playSound('happy');
+                pet.happiness = Math.min(100, pet.happiness + 10);
+            } else {
+                showMessage("Não há nada para limpar!");
+                playSound('sad');
             }
-        });
-        
-        restartBtn.addEventListener('click', initGame);
-        
-        // Inicia o jogo
-        initGame();
+            
+            updateDisplay();
+        }
+
+        // Dar remédio
+        function giveMedicine() {
+            if (pet.isDead) return;
+            
+            if (pet.isSick) {
+                pet.isSick = false;
+                showMessage("Me sinto melhor!");
+                playSound('happy');
+                pet.health = 100;
+            } else {
+                showMessage("Não estou doente!");
+                playSound('sad');
+                pet.happiness = Math.max(0, pet.happiness - 5);
+            }
+            
+            updateDisplay();
+        }
+
+        // Disciplinar o bichinho
+        function disciplinePet() {
+            if (pet.isDead) return;
+            
+            if (pet.poopCount > 0) {
+                pet.discipline = Math.min(100, pet.discipline + 10);
+                showMessage("Desculpe...");
+                playSound('sad');
+            } else {
+                showMessage("O que eu fiz?");
+                playSound('sad');
+                pet.happiness = Math.max(0, pet.happiness - 10);
+            }
+            
+            updateDisplay();
+        }
+
+        // Mostrar mensagem
+        function showMessage(message) {
+            elements.messageBox.textContent = message;
+            
+            // Limpar mensagem após 3 segundos
+            setTimeout(() => {
+                if (elements.messageBox.textContent === message) {
+                    elements.messageBox.textContent = "";
+                }
+            }, 3000);
+        }
+
+        // Mostrar mensagem aleatória
+        function showRandomMessage() {
+            if (pet.isDead || pet.isSleeping) return;
+            
+            const randomIndex = Math.floor(Math.random() * pet.messages.length);
+            showMessage(pet.messages[randomIndex]);
+        }
+
+        // Criar cocô na tela
+        function createPoop() {
+            const poop = document.createElement('div');
+            poop.className = 'poop';
+            
+            // Posição aleatória na tela
+            const screenRect = elements.screen.getBoundingClientRect();
+            const x = Math.random() * (screenRect.width - 30);
+            const y = Math.random() * (screenRect.height - 30);
+            
+            poop.style.left = `${x}px`;
+            poop.style.top = `${y}px`;
+            poop.style.opacity = '1';
+            
+            elements.screen.appendChild(poop);
+        }
+
+        // Evoluir o bichinho
+        function evolvePet() {
+            const nextStage = config.evolutionStages[pet.stage].next;
+            if (nextStage) {
+                pet.stage = nextStage;
+                showMessage("Estou crescendo!");
+                playSound('happy');
+            }
+        }
+
+        // Mostrar tela de game over
+        function showGameOver() {
+            elements.gameOverScreen.style.display = 'flex';
+        }
+
+        // Reiniciar o jogo
+        function restartGame() {
+            // Resetar estado do bichinho
+            pet.age = 0;
+            pet.stage = "baby";
+            pet.hunger = 50;
+            pet.happiness = 50;
+            pet.energy = 80;
+            pet.health = 100;
+            pet.discipline = 50;
+            pet.weight = 30;
+            pet.poopCount = 0;
+            pet.isSleeping = false;
+            pet.isSick = false;
+            pet.isDead = false;
+            pet.evolutionTimer = 0;
+            pet.lastInteraction = Date.now();
+            
+            // Limpar cocô
+            document.querySelectorAll('.poop').forEach(poop => poop.remove());
+            
+            // Esconder tela de game over
+            elements.gameOverScreen.style.display = 'none';
+            
+            // Mostrar mensagem inicial
+            showMessage("Olá! Sou seu novo bichinho!");
+            playSound('happy');
+            
+            updateDisplay();
+        }
+
+        // Alternar som
+        function toggleSound() {
+            config.soundEnabled = !config.soundEnabled;
+            elements.soundBtn.textContent = config.soundEnabled ? "🔊" : "🔇";
+            
+            if (config.soundEnabled) {
+                elements.bgMusic.play().catch(e => console.log("Autoplay bloqueado:", e));
+            } else {
+                elements.bgMusic.pause();
+            }
+        }
+
+        // Tocar efeito sonoro
+        function playSound(type) {
+            if (!config.soundEnabled) return;
+            
+            // Simples alternância entre sons (em uma implementação real, usaria os dados base64)
+            elements.soundEffect.src = config.sounds[type] || config.sounds.button;
+            elements.soundEffect.play().catch(e => console.log("Erro ao tocar som:", e));
+        }
+
+        // Iniciar o jogo quando a página carregar
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
