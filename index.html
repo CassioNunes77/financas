@@ -1,60 +1,415 @@
-import SwiftUI  
-import SpriteKit  
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termo Bird</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #87CEEB;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            background-color: #87CEEB;
+            overflow: hidden;
+            border: 3px solid #000;
+        }
+        
+        #bird {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            left: 100px;
+            z-index: 10;
+        }
+        
+        .pipe {
+            position: absolute;
+            width: 60px;
+            background-color: #2E8B57;
+            right: 0;
+        }
+        
+        .letter {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            z-index: 5;
+        }
+        
+        #word-display {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #FFF;
+            text-shadow: 2px 2px 4px #000;
+            z-index: 20;
+        }
+        
+        #score {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 20px;
+            color: #FFF;
+            text-shadow: 2px 2px 4px #000;
+            z-index: 20;
+        }
+        
+        #game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 30;
+        }
+        
+        #share-link {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #FFF;
+            color: #000;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: all;
+        }
+        
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #FFD700;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 20px;
+            background-color: #8B4513;
+            z-index: 15;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="word-display">_____</div>
+        <div id="score">Pontos: 0</div>
+        <div id="bird"></div>
+        <div class="ground"></div>
+        
+        <div id="game-over">
+            <h1>Fim de Jogo!</h1>
+            <p id="result-message"></p>
+            <p>Sua pontuação: <span id="final-score">0</span></p>
+            <p>Palavra: <span id="final-word"></span></p>
+            <div id="share-link">Copie este link para compartilhar!</div>
+            <button id="restart-btn">Jogar Novamente</button>
+        </div>
+    </div>
 
-class GameScene: SKScene {  
-    var bird = SKSpriteNode(imageNamed: "bird")  
-    var letters = ["S", "W", "I", "F", "T"]  
-    var targetWord = "SWIFT"  
-    var currentAttempt = ""  
-
-    override func didMove(to view: SKView) {  
-        physicsWorld.gravity = CGVector(dx: 0, dy: -5)  
-        setupBird()  
-        spawnLetters()  
-    }  
-
-    func setupBird() {  
-        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2)  
-        bird.position = CGPoint(x: frame.midX, y: frame.midY)  
-        addChild(bird)  
-    }  
-
-    func spawnLetters() {  
-        for letter in letters.shuffled() {  
-            let letterNode = SKLabelNode(text: letter)  
-            letterNode.position = CGPoint(x: CGFloat.random(in: 0..<size.width),  
-                                         y: CGFloat.random(in: size.height/2..<size.height))  
-            addChild(letterNode)  
-        }  
-    }  
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {  
-        bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)  
-        bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))  
-    }  
-
-    // Lógica de colisão com letras  
-    func didBegin(_ contact: SKPhysicsContact) {  
-        // Verifica se coletou a letra certa  
-        // Atualiza currentAttempt  
-        // Se completar a palavra, mostra o link de compartilhamento  
-    }  
-}  
-
-struct GameView: View {  
-    var scene: SKScene {  
-        let scene = GameScene()  
-        scene.size = CGSize(width: 300, height: 400)  
-        return scene  
-    }  
-
-    var body: some View {  
-        SpriteView(scene: scene)  
-            .frame(width: 300, height: 400)  
-    }  
-}  
-
-// Link de compartilhamento (exemplo)  
-func generateShareLink(score: Int, word: String) -> String {  
-    return "https://termobird.com/share/\(UUID().uuidString)?score=\(score)&word=\(word)"  
-}  
+    <script>
+        // Configurações do jogo
+        const config = {
+            gravity: 0.5,
+            jumpForce: -10,
+            pipeSpeed: 3,
+            pipeGap: 150,
+            pipeFrequency: 1500,
+            letterFrequency: 1000,
+            words: ['SWIFT', 'BIRDS', 'APPLE', 'GAMES', 'FLAPP', 'TERMO', 'COCOS', 'CLOUD']
+        };
+        
+        // Estado do jogo
+        const state = {
+            birdY: 300,
+            birdVelocity: 0,
+            gameOver: false,
+            score: 0,
+            pipes: [],
+            letters: [],
+            currentWord: '',
+            guessedLetters: [],
+            lastPipeTime: 0,
+            lastLetterTime: 0
+        };
+        
+        // Elementos do DOM
+        const bird = document.getElementById('bird');
+        const gameContainer = document.getElementById('game-container');
+        const wordDisplay = document.getElementById('word-display');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverScreen = document.getElementById('game-over');
+        const resultMessage = document.getElementById('result-message');
+        const finalScore = document.getElementById('final-score');
+        const finalWord = document.getElementById('final-word');
+        const shareLink = document.getElementById('share-link');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        // Inicializa o jogo
+        function initGame() {
+            state.birdY = 300;
+            state.birdVelocity = 0;
+            state.gameOver = false;
+            state.score = 0;
+            state.pipes = [];
+            state.letters = [];
+            state.guessedLetters = [];
+            
+            // Escolhe uma palavra aleatória
+            state.currentWord = config.words[Math.floor(Math.random() * config.words.length)];
+            updateWordDisplay();
+            
+            // Remove todos os canos e letras existentes
+            document.querySelectorAll('.pipe, .letter').forEach(el => el.remove());
+            
+            // Esconde a tela de game over
+            gameOverScreen.style.display = 'none';
+            
+            // Atualiza a exibição da pontuação
+            scoreDisplay.textContent = `Pontos: ${state.score}`;
+            
+            // Inicia o loop do jogo
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Atualiza a exibição da palavra
+        function updateWordDisplay() {
+            let display = '';
+            for (let i = 0; i < state.currentWord.length; i++) {
+                if (state.guessedLetters.includes(state.currentWord[i])) {
+                    display += state.currentWord[i];
+                } else {
+                    display += '_';
+                }
+            }
+            wordDisplay.textContent = display;
+        }
+        
+        // Loop principal do jogo
+        function gameLoop(timestamp) {
+            if (state.gameOver) return;
+            
+            // Atualiza a posição do pássaro
+            state.birdVelocity += config.gravity;
+            state.birdY += state.birdVelocity;
+            bird.style.top = `${state.birdY}px`;
+            
+            // Verifica colisões com o chão e o teto
+            if (state.birdY > gameContainer.offsetHeight - 60 || state.birdY < 0) {
+                endGame(false);
+                return;
+            }
+            
+            // Gera novos canos
+            if (timestamp - state.lastPipeTime > config.pipeFrequency) {
+                createPipe();
+                state.lastPipeTime = timestamp;
+            }
+            
+            // Gera novas letras
+            if (timestamp - state.lastLetterTime > config.letterFrequency) {
+                createLetter();
+                state.lastLetterTime = timestamp;
+            }
+            
+            // Move os canos
+            movePipes();
+            
+            // Move as letras
+            moveLetters();
+            
+            // Verifica se a palavra foi completada
+            if (state.guessedLetters.length === new Set(state.currentWord.split('')).size) {
+                endGame(true);
+                return;
+            }
+            
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Cria um novo cano
+        function createPipe() {
+            const gapPosition = Math.random() * (gameContainer.offsetHeight - config.pipeGap - 200) + 100;
+            
+            // Cano de cima
+            const topPipe = document.createElement('div');
+            topPipe.className = 'pipe';
+            topPipe.style.top = '0';
+            topPipe.style.height = `${gapPosition}px`;
+            topPipe.style.right = '0';
+            gameContainer.appendChild(topPipe);
+            
+            // Cano de baixo
+            const bottomPipe = document.createElement('div');
+            bottomPipe.className = 'pipe';
+            bottomPipe.style.bottom = '20px';
+            bottomPipe.style.height = `${gameContainer.offsetHeight - gapPosition - config.pipeGap - 20}px`;
+            bottomPipe.style.right = '0';
+            gameContainer.appendChild(bottomPipe);
+            
+            state.pipes.push({
+                top: topPipe,
+                bottom: bottomPipe,
+                x: gameContainer.offsetWidth,
+                passed: false
+            });
+        }
+        
+        // Cria uma nova letra
+        function createLetter() {
+            // Escolhe uma letra aleatória da palavra atual que ainda não foi coletada
+            const availableLetters = state.currentWord.split('').filter(l => !state.guessedLetters.includes(l));
+            if (availableLetters.length === 0) return;
+            
+            const letter = availableLetters[Math.floor(Math.random() * availableLetters.length)];
+            
+            const letterElement = document.createElement('div');
+            letterElement.className = 'letter';
+            letterElement.textContent = letter;
+            letterElement.style.top = `${Math.random() * (gameContainer.offsetHeight - 100) + 50}px`;
+            letterElement.style.right = '0';
+            gameContainer.appendChild(letterElement);
+            
+            state.letters.push({
+                element: letterElement,
+                x: gameContainer.offsetWidth,
+                letter: letter
+            });
+        }
+        
+        // Move os canos
+        function movePipes() {
+            for (let i = state.pipes.length - 1; i >= 0; i--) {
+                const pipe = state.pipes[i];
+                pipe.x -= config.pipeSpeed;
+                pipe.top.style.right = `${gameContainer.offsetWidth - pipe.x}px`;
+                pipe.bottom.style.right = `${gameContainer.offsetWidth - pipe.x}px`;
+                
+                // Verifica colisão com o pássaro
+                if (
+                    (100 < pipe.x + 60 && 100 + 40 > pipe.x) && 
+                    (state.birdY < pipe.top.offsetHeight || state.birdY + 40 > gameContainer.offsetHeight - pipe.bottom.offsetHeight - 20)
+                ) {
+                    endGame(false);
+                    return;
+                }
+                
+                // Marca pontos quando passa por um cano
+                if (!pipe.passed && pipe.x + 60 < 100) {
+                    pipe.passed = true;
+                    state.score += 5;
+                    scoreDisplay.textContent = `Pontos: ${state.score}`;
+                }
+                
+                // Remove canos que saíram da tela
+                if (pipe.x + 60 < 0) {
+                    pipe.top.remove();
+                    pipe.bottom.remove();
+                    state.pipes.splice(i, 1);
+                }
+            }
+        }
+        
+        // Move as letras
+        function moveLetters() {
+            for (let i = state.letters.length - 1; i >= 0; i--) {
+                const letterObj = state.letters[i];
+                letterObj.x -= config.pipeSpeed;
+                letterObj.element.style.right = `${gameContainer.offsetWidth - letterObj.x}px`;
+                
+                // Verifica colisão com o pássaro
+                if (
+                    (100 < letterObj.x + 30 && 100 + 40 > letterObj.x) && 
+                    (state.birdY < letterObj.element.offsetTop + 24 && state.birdY + 40 > letterObj.element.offsetTop)
+                ) {
+                    // Adiciona a letra às letras coletadas (se for parte da palavra)
+                    if (state.currentWord.includes(letterObj.letter) && !state.guessedLetters.includes(letterObj.letter)) {
+                        state.guessedLetters.push(letterObj.letter);
+                        updateWordDisplay();
+                        state.score += 10;
+                        scoreDisplay.textContent = `Pontos: ${state.score}`;
+                    }
+                    
+                    letterObj.element.remove();
+                    state.letters.splice(i, 1);
+                }
+                
+                // Remove letras que saíram da tela
+                if (letterObj.x + 30 < 0) {
+                    letterObj.element.remove();
+                    state.letters.splice(i, 1);
+                }
+            }
+        }
+        
+        // Finaliza o jogo
+        function endGame(win) {
+            state.gameOver = true;
+            
+            if (win) {
+                resultMessage.textContent = "Parabéns! Você completou a palavra!";
+            } else {
+                resultMessage.textContent = "Game Over! Tente novamente!";
+            }
+            
+            finalScore.textContent = state.score;
+            finalWord.textContent = state.currentWord;
+            
+            // Gera link de compartilhamento
+            const shareUrl = `https://termobird.com/share/${generateId()}?score=${state.score}&word=${state.currentWord}`;
+            shareLink.textContent = shareUrl;
+            
+            gameOverScreen.style.display = 'flex';
+        }
+        
+        // Gera um ID aleatório para o link
+        function generateId() {
+            return Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+        
+        // Event listeners
+        gameContainer.addEventListener('click', () => {
+            if (!state.gameOver) {
+                state.birdVelocity = config.jumpForce;
+            }
+        });
+        
+        restartBtn.addEventListener('click', initGame);
+        
+        // Inicia o jogo
+        initGame();
+    </script>
+</body>
+</html>
