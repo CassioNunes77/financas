@@ -2,87 +2,91 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanças Gamificadas</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FinanZ | Sua Vida Financeira Gamificada</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --accent: #fd79a8;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --danger: #d63031;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --card-bg: #ffffff;
-            --bg: #f9f9f9;
+            --primary: #6C5CE7;
+            --secondary: #00CEFF;
+            --accent: #FF3E80;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+            --success: #00B894;
+            --warning: #FDCB6E;
+            --danger: #D63031;
+            --text: #2D3436;
+            --text-light: #636E72;
+            --card-bg: #FFFFFF;
+            --bg-gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--dark);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
             padding-bottom: 80px;
         }
 
         .container {
-            max-width: 100%;
-            padding: 0 15px;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 16px;
         }
 
+        /* Header */
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--bg-gradient);
             color: white;
-            padding: 20px 15px;
-            border-radius: 0 0 20px 20px;
+            padding: 24px 16px;
+            border-radius: 0 0 24px 24px;
             box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             position: relative;
             overflow: hidden;
         }
 
-        header::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            z-index: 0;
-        }
-
         .header-content {
             position: relative;
+            z-index: 2;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            opacity: 0.1;
             z-index: 1;
         }
 
         .user-info {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            align-items: center;
+            margin-bottom: 24px;
         }
 
         .user-avatar {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .notifications {
@@ -94,8 +98,8 @@
             top: -5px;
             right: -5px;
             background-color: var(--accent);
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             font-size: 10px;
             display: flex;
@@ -103,175 +107,332 @@
             justify-content: center;
         }
 
+        .welcome-message h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome-message p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .level-indicator {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .level-progress {
+            flex-grow: 1;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            margin: 0 8px;
+            overflow: hidden;
+        }
+
+        .level-progress-bar {
+            height: 100%;
+            width: 65%;
+            background-color: white;
+            border-radius: 3px;
+        }
+
+        /* Balance Card */
         .balance-card {
             background-color: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             position: relative;
             overflow: hidden;
         }
 
-        .balance-card::after {
-            content: "";
+        .balance-card::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px;
+            width: 4px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            background: var(--bg-gradient);
         }
 
         .balance-title {
             font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
         }
 
         .balance-amount {
             font-size: 28px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
-        .balance-details {
+        .balance-stats {
             display: flex;
             justify-content: space-between;
         }
 
-        .income, .expenses {
-            display: flex;
-            flex-direction: column;
+        .stat-item {
+            text-align: center;
         }
 
-        .income .value {
-            color: var(--success);
-            font-weight: 600;
-        }
-
-        .expenses .value {
-            color: var(--danger);
-            font-weight: 600;
-        }
-
-        .label {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .section-title {
+        .stat-value {
             font-size: 18px;
             font-weight: 600;
-            margin: 20px 0 15px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .negative {
+            color: var(--danger);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action-btn {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .action-icon.primary {
+            background-color: rgba(108, 92, 231, 0.1);
+            color: var(--primary);
+        }
+
+        .action-icon.success {
+            background-color: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+
+        .action-icon.warning {
+            background-color: rgba(253, 203, 110, 0.1);
+            color: var(--warning);
+        }
+
+        .action-icon.danger {
+            background-color: rgba(214, 48, 49, 0.1);
+            color: var(--danger);
+        }
+
+        .action-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Spending Chart */
+        .chart-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chart-period {
+            font-size: 12px;
+            color: var(--text-light);
             display: flex;
             align-items: center;
         }
 
-        .section-title i {
-            margin-right: 10px;
-            color: var(--primary);
+        .chart-period i {
+            margin-left: 4px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        .stat-card .value {
-            font-size: 22px;
-            font-weight: 700;
-            margin: 5px 0;
-        }
-
-        .stat-card .label {
-            font-size: 12px;
-            color: #888;
-        }
-
-        .chart-container {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            height: 250px;
-        }
-
-        .goals-container {
+        .chart-placeholder {
+            height: 200px;
+            background-color: var(--light);
+            border-radius: 8px;
             display: flex;
-            overflow-x: auto;
-            gap: 15px;
-            padding-bottom: 10px;
-            scrollbar-width: none;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 14px;
         }
 
-        .goals-container::-webkit-scrollbar {
-            display: none;
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* Goals */
+        .goals-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .goals-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .goals-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .see-all {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 500;
         }
 
         .goal-card {
-            min-width: 200px;
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
             position: relative;
+            overflow: hidden;
+        }
+
+        .goal-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .goal-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         .goal-progress {
-            height: 5px;
-            background-color: #eee;
-            border-radius: 5px;
-            margin: 10px 0;
+            height: 6px;
+            background-color: rgba(45, 52, 54, 0.1);
+            border-radius: 3px;
+            margin-bottom: 8px;
             overflow: hidden;
         }
 
         .goal-progress-bar {
             height: 100%;
-            background: linear-gradient(to right, var(--primary), var(--accent));
-            border-radius: 5px;
+            border-radius: 3px;
         }
 
-        .goal-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .goal-amount {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .goal-target {
+        .goal-info {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            color: #888;
+            color: var(--text-light);
         }
 
-        .transactions-list {
+        .goal-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background-color: var(--primary);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Recent Transactions */
+        .transactions-container {
             background-color: var(--card-bg);
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .transactions-title {
+            font-size: 18px;
+            font-weight: 600;
         }
 
         .transaction-item {
             display: flex;
             align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(45, 52, 54, 0.05);
         }
 
         .transaction-item:last-child {
@@ -282,40 +443,51 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: rgba(108, 92, 231, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
-            color: var(--primary);
+            margin-right: 12px;
+            font-size: 16px;
+            color: white;
+        }
+
+        .transaction-icon.food {
+            background-color: #FF7675;
+        }
+
+        .transaction-icon.shopping {
+            background-color: #74B9FF;
+        }
+
+        .transaction-icon.transport {
+            background-color: #55EFC4;
+        }
+
+        .transaction-icon.entertainment {
+            background-color: #A29BFE;
         }
 
         .transaction-details {
-            flex: 1;
+            flex-grow: 1;
         }
 
-        .transaction-title {
-            font-weight: 600;
-            margin-bottom: 3px;
+        .transaction-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
         }
 
         .transaction-category {
             font-size: 12px;
-            color: #888;
+            color: var(--text-light);
         }
 
         .transaction-amount {
+            font-size: 14px;
             font-weight: 600;
         }
 
-        .income-color {
-            color: var(--success);
-        }
-
-        .expense-color {
-            color: var(--danger);
-        }
-
+        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -324,8 +496,8 @@
             background-color: var(--card-bg);
             display: flex;
             justify-content: space-around;
-            padding: 15px 0;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
             z-index: 100;
         }
 
@@ -333,9 +505,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #888;
+            color: var(--text-light);
             text-decoration: none;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .nav-item.active {
@@ -344,282 +516,306 @@
 
         .nav-icon {
             font-size: 20px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 10px;
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        .badge-primary {
-            background-color: rgba(108, 92, 231, 0.1);
-            color: var(--primary);
+        .pulse {
+            animation: pulse 2s infinite;
         }
 
-        .badge-success {
-            background-color: rgba(0, 184, 148, 0.1);
-            color: var(--success);
-        }
-
-        .badge-warning {
-            background-color: rgba(253, 203, 110, 0.1);
-            color: #e17055;
-        }
-
-        .achievement-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: var(--warning);
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
+        /* Responsive Adjustments */
+        @media (max-width: 360px) {
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
             }
-
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
+            
+            .action-btn {
+                padding: 8px 4px;
+            }
+            
+            .balance-amount {
+                font-size: 24px;
+            }
+            
+            .stat-value {
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="header-content">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+            </div>
+            <div class="welcome-message">
+                <h1>Olá, Maria!</h1>
+                <p>Seu resumo financeiro hoje</p>
+            </div>
+            <div class="level-indicator">
+                <span>Nível 3</span>
+                <div class="level-progress">
+                    <div class="level-progress-bar"></div>
+                </div>
+                <span>65%</span>
+            </div>
+        </div>
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==" class="header-bg">
+    </header>
+
     <div class="container">
-        <header>
-            <div class="header-content">
-                <div class="user-info">
-                    <div class="user-avatar">JS</div>
-                    <div class="notifications">
-                        <i class="nav-icon">🔔</i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                </div>
-                <h2>Olá, João Silva</h2>
-                <p>Seu resumo financeiro</p>
+        <!-- Balance Card -->
+        <div class="balance-card pulse">
+            <div class="balance-title">
+                <i class="fas fa-wallet" style="margin-right: 8px;"></i>
+                Saldo Disponível
             </div>
-        </header>
-
-        <div class="balance-card">
-            <div class="balance-title">Saldo Disponível</div>
-            <div class="balance-amount">R$ 8.245,90</div>
-            <div class="balance-details">
-                <div class="income">
-                    <span class="label">Receitas</span>
-                    <span class="value">+ R$ 12.500,00</span>
+            <div class="balance-amount">R$ 2.458,90</div>
+            <div class="balance-stats">
+                <div class="stat-item">
+                    <div class="stat-value positive">+ R$ 1.200</div>
+                    <div class="stat-label">Receitas</div>
                 </div>
-                <div class="expenses">
-                    <span class="label">Despesas</span>
-                    <span class="value">- R$ 4.254,10</span>
+                <div class="stat-item">
+                    <div class="stat-value negative">- R$ 856</div>
+                    <div class="stat-label">Despesas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">R$ 3.200</div>
+                    <div class="stat-label">Meta</div>
                 </div>
             </div>
         </div>
 
-        <h2 class="section-title"><i>📊</i> Estatísticas <span class="badge badge-primary">NOVO</span></h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="label">Patrimônio</div>
-                <div class="value">R$ 58k</div>
-                <div class="label">+12% este mês</div>
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="action-btn">
+                <div class="action-icon primary">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <span class="action-label">Adicionar</span>
             </div>
-            <div class="stat-card">
-                <div class="label">Investimentos</div>
-                <div class="value">R$ 23k</div>
-                <div class="label">+5,4%</div>
+            <div class="action-btn">
+                <div class="action-icon success">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <span class="action-label">Pagar</span>
             </div>
-            <div class="stat-card">
-                <div class="label">Meta Mensal</div>
-                <div class="value">78%</div>
-                <div class="label">+8% ontem</div>
+            <div class="action-btn">
+                <div class="action-icon warning">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <span class="action-label">Investir</span>
             </div>
-            <div class="stat-card">
-                <div class="label">Nível</div>
-                <div class="value">15</div>
-                <div class="label">85/100 XP</div>
+            <div class="action-btn">
+                <div class="action-icon danger">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <span class="action-label">Presente</span>
             </div>
         </div>
 
-        <h2 class="section-title"><i>📈</i> Gastos por Categoria</h2>
-        <div class="chart-container" id="spendingChart">
-            <!-- Gráfico será renderizado aqui pelo JavaScript -->
+        <!-- Spending Chart -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <div class="chart-title">Seus Gastos</div>
+                <div class="chart-period">
+                    Esta semana
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            <div class="chart-placeholder">
+                Gráfico de gastos por categoria
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #FF7675;"></div>
+                    <span>Alimentação</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #74B9FF;"></div>
+                    <span>Compras</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #55EFC4;"></div>
+                    <span>Transporte</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #A29BFE;"></div>
+                    <span>Lazer</span>
+                </div>
+            </div>
         </div>
 
-        <h2 class="section-title"><i>🏆</i> Metas <span class="badge badge-success">2 NOVAS</span></h2>
+        <!-- Goals -->
         <div class="goals-container">
+            <div class="goals-header">
+                <div class="goals-title">Suas Metas</div>
+                <a href="#" class="see-all">Ver todas</a>
+            </div>
             <div class="goal-card">
-                <i class="achievement-badge">🏅</i>
-                <div class="goal-title">Reserva de Emergência</div>
-                <div class="goal-amount">R$ 12.450 / R$ 20.000</div>
+                <div class="goal-badge">Nova</div>
+                <div class="goal-name">iPhone 15</div>
                 <div class="goal-progress">
-                    <div class="goal-progress-bar" style="width: 62%"></div>
+                    <div class="goal-progress-bar" style="width: 35%; background-color: #6C5CE7;"></div>
                 </div>
-                <div class="goal-target">
-                    <span>62% concluído</span>
-                    <span>+5% este mês</span>
+                <div class="goal-info">
+                    <span>R$ 1.750 / R$ 5.000</span>
+                    <span>35%</span>
                 </div>
             </div>
             <div class="goal-card">
-                <div class="goal-title">Viagem para Europa</div>
-                <div class="goal-amount">R$ 8.700 / R$ 15.000</div>
+                <div class="goal-name">Viagem para praia</div>
                 <div class="goal-progress">
-                    <div class="goal-progress-bar" style="width: 58%"></div>
+                    <div class="goal-progress-bar" style="width: 72%; background-color: #00B894;"></div>
                 </div>
-                <div class="goal-target">
-                    <span>58% concluído</span>
-                    <span>Meta em 8 meses</span>
-                </div>
-            </div>
-            <div class="goal-card">
-                <i class="achievement-badge">🏅</i>
-                <div class="goal-title">Notebook Novo</div>
-                <div class="goal-amount">R$ 3.200 / R$ 5.000</div>
-                <div class="goal-progress">
-                    <div class="goal-progress-bar" style="width: 64%"></div>
-                </div>
-                <div class="goal-target">
-                    <span>64% concluído</span>
-                    <span>Meta em 3 meses</span>
+                <div class="goal-info">
+                    <span>R$ 1.800 / R$ 2.500</span>
+                    <span>72%</span>
                 </div>
             </div>
         </div>
 
-        <h2 class="section-title"><i>🔄</i> Últimas Transações <span class="badge badge-warning">3 PENDENTES</span></h2>
-        <div class="transactions-list">
+        <!-- Recent Transactions -->
+        <div class="transactions-container">
+            <div class="transactions-header">
+                <div class="transactions-title">Transações Recentes</div>
+                <a href="#" class="see-all">Ver todas</a>
+            </div>
             <div class="transaction-item">
-                <div class="transaction-icon">🛒</div>
+                <div class="transaction-icon food">
+                    <i class="fas fa-utensils"></i>
+                </div>
                 <div class="transaction-details">
-                    <div class="transaction-title">Supermercado</div>
+                    <div class="transaction-name">Restaurante Sushi</div>
                     <div class="transaction-category">Alimentação</div>
                 </div>
-                <div class="transaction-amount expense-color">- R$ 248,90</div>
+                <div class="transaction-amount negative">- R$ 89,90</div>
             </div>
             <div class="transaction-item">
-                <div class="transaction-icon">💼</div>
-                <div class="transaction-details">
-                    <div class="transaction-title">Salário</div>
-                    <div class="transaction-category">Rendimento</div>
+                <div class="transaction-icon shopping">
+                    <i class="fas fa-shopping-bag"></i>
                 </div>
-                <div class="transaction-amount income-color">+ R$ 5.200,00</div>
+                <div class="transaction-details">
+                    <div class="transaction-name">Zara</div>
+                    <div class="transaction-category">Compras</div>
+                </div>
+                <div class="transaction-amount negative">- R$ 249,90</div>
             </div>
             <div class="transaction-item">
-                <div class="transaction-icon">🏠</div>
-                <div class="transaction-details">
-                    <div class="transaction-title">Aluguel</div>
-                    <div class="transaction-category">Moradia</div>
+                <div class="transaction-icon transport">
+                    <i class="fas fa-subway"></i>
                 </div>
-                <div class="transaction-amount expense-color">- R$ 1.800,00</div>
+                <div class="transaction-details">
+                    <div class="transaction-name">Uber</div>
+                    <div class="transaction-category">Transporte</div>
+                </div>
+                <div class="transaction-amount negative">- R$ 24,50</div>
             </div>
             <div class="transaction-item">
-                <div class="transaction-icon">⚡</div>
-                <div class="transaction-details">
-                    <div class="transaction-title">Energia Elétrica</div>
-                    <div class="transaction-category">Contas</div>
+                <div class="transaction-icon entertainment">
+                    <i class="fas fa-film"></i>
                 </div>
-                <div class="transaction-amount expense-color">- R$ 185,60</div>
-            </div>
-            <div class="transaction-item">
-                <div class="transaction-icon">📱</div>
                 <div class="transaction-details">
-                    <div class="transaction-title">Celular</div>
-                    <div class="transaction-category">Comunicação</div>
+                    <div class="transaction-name">Cinema</div>
+                    <div class="transaction-category">Lazer</div>
                 </div>
-                <div class="transaction-amount expense-color">- R$ 89,90</div>
+                <div class="transaction-amount negative">- R$ 36,00</div>
             </div>
         </div>
     </div>
 
-    <div class="bottom-nav">
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
         <a href="#" class="nav-item active">
-            <span class="nav-icon">🏠</span>
+            <i class="fas fa-home nav-icon"></i>
             <span>Início</span>
         </a>
         <a href="#" class="nav-item">
-            <span class="nav-icon">📊</span>
-            <span>Análise</span>
+            <i class="fas fa-chart-pie nav-icon"></i>
+            <span>Estatísticas</span>
         </a>
         <a href="#" class="nav-item">
-            <span class="nav-icon">🎯</span>
-            <span>Metas</span>
+            <i class="fas fa-gamepad nav-icon"></i>
+            <span>Desafios</span>
         </a>
         <a href="#" class="nav-item">
-            <span class="nav-icon">👤</span>
+            <i class="fas fa-user nav-icon"></i>
             <span>Perfil</span>
         </a>
-    </div>
+    </nav>
 
     <script>
         // Simulação de dados em tempo real
         document.addEventListener('DOMContentLoaded', function() {
-            // Configuração do gráfico de gastos por categoria
-            var spendingOptions = {
-                series: [{
-                    name: 'Gastos',
-                    data: [1200, 800, 450, 300, 250, 180]
-                }],
-                chart: {
-                    type: 'bar',
-                    height: '100%',
-                    toolbar: {
-                        show: false
-                    }
-                },
-                colors: ['#6c5ce7'],
-                plotOptions: {
-                    bar: {
-                        borderRadius: 4,
-                        horizontal: true,
-                    }
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                xaxis: {
-                    categories: ['Moradia', 'Alimentação', 'Transporte', 'Lazer', 'Saúde', 'Educação'],
-                },
-                tooltip: {
-                    y: {
-                        formatter: function (val) {
-                            return "R$ " + val + ",00"
-                        }
-                    }
-                }
-            };
-
-            var spendingChart = new ApexCharts(document.querySelector("#spendingChart"), spendingOptions);
-            spendingChart.render();
-
-            // Simulação de atualização em tempo real
-            setInterval(function() {
-                // Atualizar valores aleatórios
-                const randomAmount = Math.floor(Math.random() * 1000) + 500;
-                document.querySelector('.balance-amount').textContent = 'R$ ' + randomAmount.toLocaleString('pt-BR') + ',00';
+            // Atualizar saldo com animação
+            const balanceElement = document.querySelector('.balance-amount');
+            let balance = 2458.90;
+            
+            setInterval(() => {
+                // Simular pequenas variações no saldo
+                const variation = (Math.random() * 20 - 10);
+                const newBalance = Math.max(0, balance + variation);
                 
-                // Atualizar gráfico com novos dados
-                const newData = spendingOptions.series[0].data.map(value => {
-                    return Math.max(100, value + (Math.random() * 200 - 100));
+                balanceElement.textContent = 'R$ ' + newBalance.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
                 });
                 
-                spendingChart.updateSeries([{
-                    data: newData
-                }]);
-                
-                // Atualizar progresso das metas
-                const goals = document.querySelectorAll('.goal-progress-bar');
-                goals.forEach(goal => {
-                    const currentWidth = parseFloat(goal.style.width);
-                    const newWidth = Math.min(100, currentWidth + (Math.random() * 3));
-                    goal.style.width = newWidth + '%';
-                    goal.parentElement.nextElementSibling.querySelector('span:first-child').textContent = 
-                        Math.floor(newWidth) + '% concluído';
-                });
-                
+                // Adicionar classe de animação
+                balanceElement.classList.add('pulse');
+                setTimeout(() => {
+                    balanceElement.classList.remove('pulse');
+                }, 1000);
             }, 5000);
+            
+            // Simular notificações
+            const notificationBadge = document.querySelector('.notification-badge');
+            let notificationCount = 3;
+            
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    notificationCount++;
+                    notificationBadge.textContent = notificationCount;
+                    notificationBadge.classList.add('pulse');
+                    setTimeout(() => {
+                        notificationBadge.classList.remove('pulse');
+                    }, 1000);
+                }
+            }, 10000);
+            
+            // Simular progresso nas metas
+            const goalProgressBars = document.querySelectorAll('.goal-progress-bar');
+            
+            setInterval(() => {
+                goalProgressBars.forEach(bar => {
+                    const currentWidth = parseFloat(bar.style.width) || 0;
+                    const increment = Math.random() * 2;
+                    const newWidth = Math.min(100, currentWidth + increment);
+                    
+                    bar.style.width = newWidth + '%';
+                    
+                    // Atualizar porcentagem no texto
+                    const goalInfo = bar.closest('.goal-card').querySelector('.goal-info');
+                    const percentageElement = goalInfo.querySelector('span:last-child');
+                    percentageElement.textContent = Math.round(newWidth) + '%';
+                });
+            }, 8000);
         });
     </script>
 </body>
