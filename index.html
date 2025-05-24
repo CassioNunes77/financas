@@ -3,491 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FinanZ | Sua Vida Financeira Gamificada</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <title>MiniRotina - Pequenas ações. Grandes mudanças.</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6C5CE7;
-            --secondary: #00CEFF;
-            --accent: #FF3E80;
-            --dark: #2D3436;
-            --light: #F5F6FA;
-            --success: #00B894;
-            --warning: #FDCB6E;
-            --danger: #D63031;
-            --text: #2D3436;
-            --text-light: #636E72;
+            --primary: #5E81F4;
+            --primary-light: #8EA6F8;
+            --success: #7CE7AC;
+            --warning: #F4BE5E;
+            --danger: #F46E6E;
+            --text: #1C1C1E;
+            --text-light: #8E8E93;
+            --background: #F7F7FC;
             --card-bg: #FFFFFF;
-            --bg-gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --iphone-notch: env(safe-area-inset-top);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light);
+            background-color: var(--background);
             color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            padding-bottom: 80px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
+            max-width: 414px;
             margin: 0 auto;
-            padding: 0 16px;
-        }
-
-        /* Header */
-        header {
-            background: var(--bg-gradient);
-            color: white;
-            padding: 24px 16px;
-            border-radius: 0 0 24px 24px;
-            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
-            margin-bottom: 24px;
+            min-height: 100vh;
             position: relative;
-            overflow: hidden;
+            padding-top: var(--iphone-notch);
+            overflow-x: hidden;
         }
 
-        .header-content {
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
-            z-index: 2;
+            padding: 0 20px;
         }
 
-        .header-bg {
+        .status-bar-time {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .status-bar-icons {
             position: absolute;
-            top: 0;
-            right: 0;
-            height: 100%;
-            opacity: 0.1;
-            z-index: 1;
+            right: 20px;
+            display: flex;
+            gap: 5px;
         }
 
-        .user-info {
+        .header {
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
         }
 
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .notifications {
-            position: relative;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--accent);
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .welcome-message h1 {
-            font-size: 24px;
+        .header h1 {
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 8px;
+            color: var(--text);
         }
 
-        .welcome-message p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .level-indicator {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 8px 16px;
-            margin-top: 16px;
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background-color: var(--primary-light);
             display: flex;
+            justify-content: center;
             align-items: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .greeting {
+            padding: 0 20px 20px;
+        }
+
+        .greeting h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .greeting p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eaeaea;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 0;
+            margin-right: 25px;
+            position: relative;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .habits-container {
+            padding: 0 20px;
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title a {
             font-size: 14px;
+            font-weight: 500;
+            color: var(--primary);
+            text-decoration: none;
         }
 
-        .level-progress {
-            flex-grow: 1;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            margin: 0 8px;
-            overflow: hidden;
+        .habits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
-        .level-progress-bar {
-            height: 100%;
-            width: 65%;
-            background-color: white;
-            border-radius: 3px;
-        }
-
-        /* Balance Card */
-        .balance-card {
+        .habit-card {
             background-color: var(--card-bg);
             border-radius: 16px;
             padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .balance-card::before {
+        .habit-card.completed {
+            background-color: #f0f4ff;
+        }
+
+        .habit-card.completed::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 4px;
             height: 100%;
-            background: var(--bg-gradient);
+            background-color: var(--success);
         }
 
-        .balance-title {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 8px;
+        .habit-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background-color: var(--primary-light);
             display: flex;
+            justify-content: center;
             align-items: center;
+            margin-bottom: 15px;
+            color: white;
         }
 
-        .balance-amount {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 16px;
+        .habit-card.completed .habit-icon {
+            background-color: var(--success);
         }
 
-        .balance-stats {
+        .habit-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+
+        .habit-time {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .habit-check {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            border: 2px solid #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .habit-card.completed .habit-check {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .progress-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+
+        .progress-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 18px;
+        .progress-title {
             font-weight: 600;
         }
 
-        .stat-label {
+        .progress-days {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 75%;
+            background-color: var(--primary);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-message {
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 12px;
+        }
+
+        .calendar-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-title {
+            font-weight: 600;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .calendar-nav button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day-header {
             font-size: 12px;
             color: var(--text-light);
-        }
-
-        .positive {
-            color: var(--success);
-        }
-
-        .negative {
-            color: var(--danger);
-        }
-
-        /* Quick Actions */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .action-btn {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 12px 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
+            font-weight: 500;
         }
 
-        .action-btn:active {
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .calendar-day.empty {
+            visibility: hidden;
+        }
+
+        .calendar-day.current {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .calendar-day.completed {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .calendar-day.partial {
+            background-color: var(--warning);
+            color: white;
+        }
+
+        .calendar-day.missed {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .add-habit-button {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            box-shadow: 0 6px 12px rgba(94, 129, 244, 0.3);
+            z-index: 100;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .add-habit-button:active {
             transform: scale(0.95);
         }
 
-        .action-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-
-        .action-icon.primary {
-            background-color: rgba(108, 92, 231, 0.1);
-            color: var(--primary);
-        }
-
-        .action-icon.success {
-            background-color: rgba(0, 184, 148, 0.1);
-            color: var(--success);
-        }
-
-        .action-icon.warning {
-            background-color: rgba(253, 203, 110, 0.1);
-            color: var(--warning);
-        }
-
-        .action-icon.danger {
-            background-color: rgba(214, 48, 49, 0.1);
-            color: var(--danger);
-        }
-
-        .action-label {
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        /* Spending Chart */
-        .chart-container {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .chart-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .chart-period {
-            font-size: 12px;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-        }
-
-        .chart-period i {
-            margin-left: 4px;
-        }
-
-        .chart-placeholder {
-            height: 200px;
-            background-color: var(--light);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        .chart-legend {
-            display: flex;
-            justify-content: center;
-            margin-top: 16px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            font-size: 12px;
-        }
-
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-
-        /* Goals */
-        .goals-container {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .goals-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .goals-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .see-all {
-            font-size: 12px;
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        .goal-card {
-            background-color: var(--light);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .goal-card:last-child {
-            margin-bottom: 0;
-        }
-
-        .goal-name {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .goal-progress {
-            height: 6px;
-            background-color: rgba(45, 52, 54, 0.1);
-            border-radius: 3px;
-            margin-bottom: 8px;
-            overflow: hidden;
-        }
-
-        .goal-progress-bar {
-            height: 100%;
-            border-radius: 3px;
-        }
-
-        .goal-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        .goal-badge {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background-color: var(--primary);
-            color: white;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        /* Recent Transactions */
-        .transactions-container {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .transactions-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .transactions-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .transaction-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(45, 52, 54, 0.05);
-        }
-
-        .transaction-item:last-child {
-            border-bottom: none;
-        }
-
-        .transaction-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
-            font-size: 16px;
-            color: white;
-        }
-
-        .transaction-icon.food {
-            background-color: #FF7675;
-        }
-
-        .transaction-icon.shopping {
-            background-color: #74B9FF;
-        }
-
-        .transaction-icon.transport {
-            background-color: #55EFC4;
-        }
-
-        .transaction-icon.entertainment {
-            background-color: #A29BFE;
-        }
-
-        .transaction-details {
-            flex-grow: 1;
-        }
-
-        .transaction-name {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-
-        .transaction-category {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        .transaction-amount {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -497,8 +390,9 @@
             display: flex;
             justify-content: space-around;
             padding: 12px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-            z-index: 100;
+            max-width: 414px;
+            margin: 0 auto;
+            border-top: 1px solid #f0f0f0;
         }
 
         .nav-item {
@@ -510,312 +404,673 @@
             font-size: 10px;
         }
 
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        .nav-icon {
+        .nav-item i {
             font-size: 20px;
             margin-bottom: 4px;
         }
 
-        /* Animations */
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding-top: var(--iphone-notch);
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 380px;
+            border-radius: 20px;
+            padding: 25px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+        }
+
+        .habit-suggestions {
+            margin-bottom: 20px;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .suggestion-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            color: var(--primary);
+        }
+
+        .suggestion-text {
+            flex: 1;
+            font-size: 15px;
+        }
+
+        .suggestion-add {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            font-size: 15px;
+        }
+
+        .icon-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .icon-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .icon-option.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid #eaeaea;
+            margin-right: 10px;
+        }
+
+        /* Celebration animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            opacity: 0;
+            z-index: 999;
+            animation: confetti-fall 3s ease-in-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 320px) {
+            .habits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
 
-        .pulse {
-            animation: pulse 2s infinite;
+        .shake {
+            animation: shake 0.5s;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 360px) {
-            .quick-actions {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-            
-            .action-btn {
-                padding: 8px 4px;
-            }
-            
-            .balance-amount {
-                font-size: 24px;
-            }
-            
-            .stat-value {
-                font-size: 16px;
-            }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="user-info">
-                <div class="user-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="notifications">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </div>
-            </div>
-            <div class="welcome-message">
-                <h1>Olá, Cássio!</h1>
-                <p>Seu resumo financeiro hoje</p>
-            </div>
-            <div class="level-indicator">
-                <span>Nível 3</span>
-                <div class="level-progress">
-                    <div class="level-progress-bar"></div>
-                </div>
-                <span>65%</span>
-            </div>
+    <!-- iPhone status bar -->
+    <div class="status-bar">
+        <div class="status-bar-time" id="current-time">9:41</div>
+        <div class="status-bar-icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
         </div>
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==" class="header-bg">
-    </header>
+    </div>
 
-    <div class="container">
-        <!-- Balance Card -->
-        <div class="balance-card pulse">
-            <div class="balance-title">
-                <i class="fas fa-wallet" style="margin-right: 8px;"></i>
-                Saldo Disponível
-            </div>
-            <div class="balance-amount">R$ 2.458,90</div>
-            <div class="balance-stats">
-                <div class="stat-item">
-                    <div class="stat-value positive">+ R$ 1.200</div>
-                    <div class="stat-label">Receitas</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value negative">- R$ 856</div>
-                    <div class="stat-label">Despesas</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">R$ 3.200</div>
-                    <div class="stat-label">Meta</div>
-                </div>
-            </div>
+    <!-- App header -->
+    <div class="header">
+        <h1>MiniRotina</h1>
+        <div class="avatar">C</div>
+    </div>
+
+    <!-- Greeting -->
+    <div class="greeting">
+        <h2>Bom dia, Cássio</h2>
+        <p>Vamos começar com o que importa?</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active">Hoje</div>
+        <div class="tab">Progresso</div>
+        <div class="tab">Perfil</div>
+    </div>
+
+    <!-- Main content -->
+    <div class="habits-container">
+        <div class="section-title">
+            <span>Seus micro-hábitos</span>
+            <a href="#" id="view-all">Ver todos</a>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <div class="action-btn">
-                <div class="action-icon primary">
-                    <i class="fas fa-plus"></i>
+        <div class="habits-grid">
+            <div class="habit-card" data-habit="water">
+                <div class="habit-icon">
+                    <i class="fas fa-tint"></i>
                 </div>
-                <span class="action-label">Adicionar</span>
-            </div>
-            <div class="action-btn">
-                <div class="action-icon success">
-                    <i class="fas fa-money-bill-wave"></i>
+                <div class="habit-name">Beber água</div>
+                <div class="habit-time">8:00 - 20:00</div>
+                <div class="habit-check">
+                    <i class="fas fa-check"></i>
                 </div>
-                <span class="action-label">Pagar</span>
             </div>
-            <div class="action-btn">
-                <div class="action-icon warning">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <span class="action-label">Investir</span>
-            </div>
-            <div class="action-btn">
-                <div class="action-icon danger">
-                    <i class="fas fa-gift"></i>
-                </div>
-                <span class="action-label">Presente</span>
-            </div>
-        </div>
 
-        <!-- Spending Chart -->
-        <div class="chart-container">
-            <div class="chart-header">
-                <div class="chart-title">Seus Gastos</div>
-                <div class="chart-period">
-                    Esta semana
-                    <i class="fas fa-chevron-down"></i>
+            <div class="habit-card" data-habit="breathe">
+                <div class="habit-icon">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <div class="habit-name">Respirar 1 minuto</div>
+                <div class="habit-time">A qualquer momento</div>
+                <div class="habit-check">
+                    <i class="fas fa-check"></i>
                 </div>
             </div>
-            <div class="chart-placeholder">
-                Gráfico de gastos por categoria
+
+            <div class="habit-card" data-habit="gratitude">
+                <div class="habit-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="habit-name">Escrever 1 gratidão</div>
+                <div class="habit-time">Manhã ou noite</div>
+                <div class="habit-check">
+                    <i class="fas fa-check"></i>
+                </div>
             </div>
-            <div class="chart-legend">
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #FF7675;"></div>
-                    <span>Alimentação</span>
+
+            <div class="habit-card" data-habit="read">
+                <div class="habit-icon">
+                    <i class="fas fa-book-open"></i>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #74B9FF;"></div>
-                    <span>Compras</span>
+                <div class="habit-name">Ler 1 frase</div>
+                <div class="habit-time">Durante o dia</div>
+                <div class="habit-check">
+                    <i class="fas fa-check"></i>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #55EFC4;"></div>
-                    <span>Transporte</span>
+            </div>
+
+            <div class="habit-card" data-habit="message">
+                <div class="habit-icon">
+                    <i class="fas fa-comment-dots"></i>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background-color: #A29BFE;"></div>
-                    <span>Lazer</span>
+                <div class="habit-name">Mensagem para alguém</div>
+                <div class="habit-time">Durante o dia</div>
+                <div class="habit-check">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+
+            <div class="habit-card" data-habit="stretch">
+                <div class="habit-icon">
+                    <i class="fas fa-child"></i>
+                </div>
+                <div class="habit-name">Alongar 1 minuto</div>
+                <div class="habit-time">A qualquer momento</div>
+                <div class="habit-check">
+                    <i class="fas fa-check"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Goals -->
-        <div class="goals-container">
-            <div class="goals-header">
-                <div class="goals-title">Suas Metas</div>
-                <a href="#" class="see-all">Ver todas</a>
+        <div class="section-title">
+            <span>Seu progresso</span>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <div class="progress-title">Sequência atual</div>
+                <div class="progress-days">5 dias</div>
             </div>
-            <div class="goal-card">
-                <div class="goal-badge">Nova</div>
-                <div class="goal-name">iPhone 15</div>
-                <div class="goal-progress">
-                    <div class="goal-progress-bar" style="width: 35%; background-color: #6C5CE7;"></div>
-                </div>
-                <div class="goal-info">
-                    <span>R$ 1.750 / R$ 5.000</span>
-                    <span>35%</span>
-                </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
             </div>
-            <div class="goal-card">
-                <div class="goal-name">Viagem para praia</div>
-                <div class="goal-progress">
-                    <div class="goal-progress-bar" style="width: 72%; background-color: #00B894;"></div>
-                </div>
-                <div class="goal-info">
-                    <span>R$ 1.800 / R$ 2.500</span>
-                    <span>72%</span>
-                </div>
+            <div class="progress-message">
+                Você está indo bem! Complete mais 2 dias para bater seu recorde.
             </div>
         </div>
 
-        <!-- Recent Transactions -->
-        <div class="transactions-container">
-            <div class="transactions-header">
-                <div class="transactions-title">Transações Recentes</div>
-                <a href="#" class="see-all">Ver todas</a>
+        <div class="section-title">
+            <span>Seu calendário</span>
+        </div>
+
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <div class="calendar-title">Junho 2023</div>
+                <div class="calendar-nav">
+                    <button><i class="fas fa-chevron-left"></i></button>
+                    <button><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
-            <div class="transaction-item">
-                <div class="transaction-icon food">
-                    <i class="fas fa-utensils"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="transaction-name">Restaurante Sushi</div>
-                    <div class="transaction-category">Alimentação</div>
-                </div>
-                <div class="transaction-amount negative">- R$ 89,90</div>
-            </div>
-            <div class="transaction-item">
-                <div class="transaction-icon shopping">
-                    <i class="fas fa-shopping-bag"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="transaction-name">Zara</div>
-                    <div class="transaction-category">Compras</div>
-                </div>
-                <div class="transaction-amount negative">- R$ 249,90</div>
-            </div>
-            <div class="transaction-item">
-                <div class="transaction-icon transport">
-                    <i class="fas fa-subway"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="transaction-name">Uber</div>
-                    <div class="transaction-category">Transporte</div>
-                </div>
-                <div class="transaction-amount negative">- R$ 24,50</div>
-            </div>
-            <div class="transaction-item">
-                <div class="transaction-icon entertainment">
-                    <i class="fas fa-film"></i>
-                </div>
-                <div class="transaction-details">
-                    <div class="transaction-name">Cinema</div>
-                    <div class="transaction-category">Lazer</div>
-                </div>
-                <div class="transaction-amount negative">- R$ 36,00</div>
+            <div class="calendar-grid">
+                <div class="calendar-day-header">D</div>
+                <div class="calendar-day-header">S</div>
+                <div class="calendar-day-header">T</div>
+                <div class="calendar-day-header">Q</div>
+                <div class="calendar-day-header">Q</div>
+                <div class="calendar-day-header">S</div>
+                <div class="calendar-day-header">S</div>
+
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day empty"></div>
+                <div class="calendar-day">1</div>
+                <div class="calendar-day completed">2</div>
+                <div class="calendar-day completed">3</div>
+
+                <div class="calendar-day completed">4</div>
+                <div class="calendar-day completed">5</div>
+                <div class="calendar-day partial">6</div>
+                <div class="calendar-day completed">7</div>
+                <div class="calendar-day completed">8</div>
+                <div class="calendar-day completed">9</div>
+                <div class="calendar-day completed">10</div>
+
+                <div class="calendar-day completed">11</div>
+                <div class="calendar-day missed">12</div>
+                <div class="calendar-day completed">13</div>
+                <div class="calendar-day partial">14</div>
+                <div class="calendar-day completed">15</div>
+                <div class="calendar-day completed">16</div>
+                <div class="calendar-day completed">17</div>
+
+                <div class="calendar-day completed">18</div>
+                <div class="calendar-day completed">19</div>
+                <div class="calendar-day completed">20</div>
+                <div class="calendar-day current">21</div>
+                <div class="calendar-day">22</div>
+                <div class="calendar-day">23</div>
+                <div class="calendar-day">24</div>
+
+                <div class="calendar-day">25</div>
+                <div class="calendar-day">26</div>
+                <div class="calendar-day">27</div>
+                <div class="calendar-day">28</div>
+                <div class="calendar-day">29</div>
+                <div class="calendar-day">30</div>
+                <div class="calendar-day empty"></div>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
+    <!-- Add habit button -->
+    <button class="add-habit-button" id="add-habit-button">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Bottom navigation -->
+    <div class="bottom-nav">
         <a href="#" class="nav-item active">
-            <i class="fas fa-home nav-icon"></i>
+            <i class="fas fa-home"></i>
             <span>Início</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="fas fa-chart-pie nav-icon"></i>
-            <span>Estatísticas</span>
+            <i class="fas fa-chart-line"></i>
+            <span>Progresso</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="fas fa-gamepad nav-icon"></i>
-            <span>Desafios</span>
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendário</span>
         </a>
         <a href="#" class="nav-item">
-            <i class="fas fa-user nav-icon"></i>
-            <span>Perfil</span>
+            <i class="fas fa-cog"></i>
+            <span>Configurações</span>
         </a>
-    </nav>
+    </div>
+
+    <!-- Add Habit Modal -->
+    <div class="modal" id="add-habit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Adicionar hábito</div>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            
+            <div class="habit-suggestions">
+                <div class="section-title">Sugestões</div>
+                
+                <div class="suggestion-item">
+                    <div class="suggestion-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="suggestion-text">Dormir cedo hoje</div>
+                    <div class="suggestion-add">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <div class="suggestion-item">
+                    <div class="suggestion-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <div class="suggestion-text">Comer uma fruta</div>
+                    <div class="suggestion-add">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <div class="suggestion-item">
+                    <div class="suggestion-icon">
+                        <i class="fas fa-walking"></i>
+                    </div>
+                    <div class="suggestion-text">Caminhar 5 minutos</div>
+                    <div class="suggestion-add">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <div class="suggestion-item">
+                    <div class="suggestion-icon">
+                        <i class="fas fa-meditation"></i>
+                    </div>
+                    <div class="suggestion-text">Meditar 1 minuto</div>
+                    <div class="suggestion-add">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-title">Personalizado</div>
+            
+            <div class="form-group">
+                <label for="habit-name">Nome do hábito</label>
+                <input type="text" id="habit-name" class="form-control" placeholder="Ex: Beber água">
+            </div>
+            
+            <div class="form-group">
+                <label>Ícone</label>
+                <div class="icon-selector">
+                    <div class="icon-option selected"><i class="fas fa-tint"></i></div>
+                    <div class="icon-option"><i class="fas fa-heart"></i></div>
+                    <div class="icon-option"><i class="fas fa-book"></i></div>
+                    <div class="icon-option"><i class="fas fa-walking"></i></div>
+                    <div class="icon-option"><i class="fas fa-moon"></i></div>
+                    <div class="icon-option"><i class="fas fa-apple-alt"></i></div>
+                    <div class="icon-option"><i class="fas fa-coffee"></i></div>
+                    <div class="icon-option"><i class="fas fa-pencil-alt"></i></div>
+                    <div class="icon-option"><i class="fas fa-music"></i></div>
+                    <div class="icon-option"><i class="fas fa-spa"></i></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="habit-time">Horário (opcional)</label>
+                <input type="time" id="habit-time" class="form-control">
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline">Cancelar</button>
+                <button class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div class="modal" id="celebration-modal">
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header" style="justify-content: center;">
+                <div class="modal-title">🎉 Parabéns!</div>
+            </div>
+            
+            <div style="font-size: 16px; margin-bottom: 20px;">
+                Você completou todos os hábitos de hoje!
+            </div>
+            
+            <div style="font-size: 14px; color: var(--text-light); margin-bottom: 30px;">
+                Pequenas ações levam a grandes mudanças. Continue assim!
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%;" id="close-celebration">
+                Ótimo!
+            </button>
+        </div>
+    </div>
 
     <script>
-        // Simulação de dados em tempo real
-        document.addEventListener('DOMContentLoaded', function() {
-            // Atualizar saldo com animação
-            const balanceElement = document.querySelector('.balance-amount');
-            let balance = 2458.90;
-            
-            setInterval(() => {
-                // Simular pequenas variações no saldo
-                const variation = (Math.random() * 20 - 10);
-                const newBalance = Math.max(0, balance + variation);
-                
-                balanceElement.textContent = 'R$ ' + newBalance.toLocaleString('pt-BR', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-                
-                // Adicionar classe de animação
-                balanceElement.classList.add('pulse');
-                setTimeout(() => {
-                    balanceElement.classList.remove('pulse');
-                }, 1000);
-            }, 5000);
-            
-            // Simular notificações
-            const notificationBadge = document.querySelector('.notification-badge');
-            let notificationCount = 3;
-            
-            setInterval(() => {
-                if (Math.random() > 0.7) {
-                    notificationCount++;
-                    notificationBadge.textContent = notificationCount;
-                    notificationBadge.classList.add('pulse');
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+        }
+        
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // Habit completion
+        const habitCards = document.querySelectorAll('.habit-card');
+        let completedHabits = 0;
+        
+        habitCards.forEach(card => {
+            card.addEventListener('click', function() {
+                if (this.classList.contains('completed')) {
+                    this.classList.remove('completed');
+                    completedHabits--;
+                } else {
+                    this.classList.add('completed');
+                    completedHabits++;
+                    
+                    // Add pulse animation
+                    this.classList.add('pulse');
                     setTimeout(() => {
-                        notificationBadge.classList.remove('pulse');
-                    }, 1000);
+                        this.classList.remove('pulse');
+                    }, 1500);
+                    
+                    // Create confetti
+                    if (completedHabits === habitCards.length) {
+                        setTimeout(() => {
+                            showCelebration();
+                        }, 500);
+                    }
                 }
-            }, 10000);
+            });
+        });
+        
+        // Modal handling
+        const addHabitButton = document.getElementById('add-habit-button');
+        const addHabitModal = document.getElementById('add-habit-modal');
+        const modalClose = document.getElementById('modal-close');
+        const celebrationModal = document.getElementById('celebration-modal');
+        const closeCelebration = document.getElementById('close-celebration');
+        
+        addHabitButton.addEventListener('click', function() {
+            addHabitModal.classList.add('active');
+        });
+        
+        modalClose.addEventListener('click', function() {
+            addHabitModal.classList.remove('active');
+        });
+        
+        closeCelebration.addEventListener('click', function() {
+            celebrationModal.classList.remove('active');
+        });
+        
+        // Icon selection
+        const iconOptions = document.querySelectorAll('.icon-option');
+        iconOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                iconOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // Celebration function
+        function showCelebration() {
+            celebrationModal.classList.add('active');
+            createConfetti();
+        }
+        
+        function createConfetti() {
+            const colors = ['#5E81F4', '#7CE7AC', '#F4BE5E', '#F46E6E', '#8EA6F8'];
             
-            // Simular progresso nas metas
-            const goalProgressBars = document.querySelectorAll('.goal-progress-bar');
-            
-            setInterval(() => {
-                goalProgressBars.forEach(bar => {
-                    const currentWidth = parseFloat(bar.style.width) || 0;
-                    const increment = Math.random() * 2;
-                    const newWidth = Math.min(100, currentWidth + increment);
-                    
-                    bar.style.width = newWidth + '%';
-                    
-                    // Atualizar porcentagem no texto
-                    const goalInfo = bar.closest('.goal-card').querySelector('.goal-info');
-                    const percentageElement = goalInfo.querySelector('span:last-child');
-                    percentageElement.textContent = Math.round(newWidth) + '%';
-                });
-            }, 8000);
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Tab switching
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Nav item switching
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // View all habits
+        document.getElementById('view-all').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Esta funcionalidade mostraria todos os hábitos em uma lista completa.');
         });
     </script>
 </body>
